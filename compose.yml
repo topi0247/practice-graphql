@@ -1,0 +1,31 @@
+version: '3.9'
+
+services:
+  web:
+    build: .
+    tty: true
+    command: sh -c "go run server.go"
+    ports:
+      - '8080:8080'
+    depends_on:
+      - db
+    volumes:
+      - .:/app
+      - go-data:/go
+
+  db:
+    image: postgres:14.5-alpine
+    container_name: postgres
+    environment:
+      POSTGRES_DB: todo
+      POSTGRES_PASSWORD: password
+      POSTGRES_USER: postgres
+      TimeZone: Asia/Tokyo
+    ports:
+      - '5432:5432'
+    volumes:
+      - /var/lib/postgres/data
+
+volumes:
+  go-data:
+
